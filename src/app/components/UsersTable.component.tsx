@@ -1,7 +1,7 @@
 "use client"
 
 import React, { useEffect, useState } from "react";
-import {Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, User, Chip, Tooltip, ChipProps, getKeyValue,useDisclosure, Pagination} from "@nextui-org/react";
+import {Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, User, Chip, Tooltip, ChipProps, getKeyValue,useDisclosure, Pagination, Skeleton} from "@nextui-org/react";
 import { UsersData } from "@/types/usersData.type";
 import { UsersType } from "@/types/users.type";
 import { columns } from "@/constants/columnsUsersTable";
@@ -42,6 +42,7 @@ const UsersTable:React.FC<UsersTableParams> = ({usersData,handleEditUser,removeU
   // const {isOpen, onOpen, onOpenChange} = useDisclosure();
       
  const [currentPage , setCurrentPage] = useState(1)
+ const [isLoaded , setIsLoaded] = useState(false)
 
 useEffect(() =>{
   console.log({target:'useEffect' ,usersData })
@@ -59,6 +60,13 @@ useEffect(() =>{
 
   const renderCell = React.useCallback((user: UsersType, columnKey: React.Key) => {
     const cellValue = user[columnKey as keyof UsersType];
+
+    if(user.id > 0){
+      setIsLoaded(true)
+    } else{
+      setIsLoaded(false)
+    }
+
 
    
     const nameColumn = (
@@ -138,11 +146,15 @@ useEffect(() =>{
             )}
           </TableHeader>
           <TableBody items={usersData.data}>
+                 
             {(item) => (
               <TableRow key={item.id}>
-                {(columnKey) => <TableCell>{renderCell(item, columnKey)}</TableCell>}
+                    {(columnKey) =>       
+                           <TableCell>{renderCell(item, columnKey)}</TableCell>   }
+                     
               </TableRow>
             )}
+            
           </TableBody>
         </Table>
 

@@ -6,6 +6,7 @@ import { UsersType } from "@/types/users.type"
 import { useEffect, useState } from "react"
 import {Card, CardHeader, CardBody, Image, Chip} from "@nextui-org/react";
 import { BiSolidUserDetail } from "react-icons/bi"
+import {Skeleton} from "@nextui-org/skeleton";
 
 
 type Params = {
@@ -14,6 +15,7 @@ type Params = {
 const UserPage = ({params}:{params:Params}) => {
 
     const [user , setUser] = useState<UsersType>(UsersInitialData)
+    const [isLoaded , setIsLoaded] = useState(false)
     const {userId} = params;
     useEffect(() => {
         if(userId){
@@ -29,6 +31,17 @@ const UserPage = ({params}:{params:Params}) => {
 
         }
     } , [userId])
+
+      
+    useEffect(() => {
+        if(user && user.id > 0){
+            setIsLoaded(true)
+        } else{
+            setIsLoaded(false)
+        }
+    } , [user])
+
+
     return (
         <>
           <Card   className="py-4 mx-auto w-[30%]    mt-6">
@@ -40,10 +53,17 @@ const UserPage = ({params}:{params:Params}) => {
                         >
                             Details
                     </Chip>
-                    <small className="text-default-500">{user.email}</small>
-                    <h4 className="font-bold text-large">{user.first_name} {user.last_name}</h4>
+                    <Skeleton className="rounded-lg" isLoaded={isLoaded}>
+                        <small className="text-default-500">{user.email}</small>
+                    </Skeleton>
+
+                    <Skeleton className="rounded-lg" isLoaded={isLoaded}>
+                        <h4 className="font-bold text-large">{user.first_name} {user.last_name}</h4>
+                    </Skeleton>
                 </CardHeader>
                 <CardBody  className="overflow-visible py-2">
+
+                <Skeleton className="rounded-lg" isLoaded={isLoaded}>
                     <Image
                      
                     alt="Card background"
@@ -51,6 +71,7 @@ const UserPage = ({params}:{params:Params}) => {
                     src={user.avatar}
                     width={390}
                     />
+                </Skeleton>
                 </CardBody>
             </Card>  
         </>

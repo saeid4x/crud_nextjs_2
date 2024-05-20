@@ -16,6 +16,7 @@ import { IoMdPersonAdd } from "react-icons/io"
 import CreateUserModal from "../components/userCreateModal"
 import CreateUser from "@/actions/CreateUser"
 import { TfiReload } from "react-icons/tfi"
+import {Skeleton} from "@nextui-org/skeleton";
 import {toast as toastify} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -29,14 +30,23 @@ const UsersPage = () => {
     const [usersData , setUsersData] = useState<UsersData>(UsersDataInitialData)
     const [userData, setUserData] = useState<UsersType[]>()
     const [selectedUser , setSelectedUser] = useState<UsersType>(UsersInitialData)
+    const [isLoaded , setIsLoaded] = useState(false)
 
     useEffect(() => {
         handleGetUser()
     } , [])
+
+     useEffect(() => {
+        if(usersData && usersData.data[0].id > 0){
+            setIsLoaded(true)
+        } else{
+            setIsLoaded(false)
+        }
+    } , [usersData])
     
 
     const handleGetUser = (currentPage:number = 1) => {
-        const toastLoading = toastify.loading(' Fetching all users.....')
+        // const toastLoading = toastify.loading(' Fetching all users.....')
         GetUsers(currentPage)
         .then((response:any) => {
             if(response.data){
@@ -44,8 +54,8 @@ const UsersPage = () => {
                     // console.log( {target:'users-page',users:response.data})
                     // console.log( {target:'users-page2',users:response.data.data})
                     setUsersData(response.data)
-                    toastify.dismiss(toastLoading);
-                    toastify.success(`All usres Fetched successfully ✔`)
+                    // toastify.dismiss(toastLoading);
+                    // toastify.success(`All usres Fetched successfully ✔`)
 
                  
 
