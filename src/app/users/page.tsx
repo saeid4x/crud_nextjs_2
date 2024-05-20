@@ -161,7 +161,7 @@ const UsersPage = () => {
     
     return (
         <>
-        <h1>users page</h1>
+       
 
         <div className="flex flex-row gap-4 mx-auto w-[50%] mb-3">
             <Button color="secondary" variant="bordered" startContent={<IoMdPersonAdd />}
